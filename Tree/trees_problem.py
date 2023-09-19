@@ -193,25 +193,73 @@ class TreesProblem:
             return root
         dict={}
         result=[]
-        self.getTraversalTree(root,0,dict)
+        self.getTraversalTree(root,0,0,dict)
         for key,data in enumerate(sorted(dict)):
             result.append(sorted(dict[data]))
         return result
             
         
         
-    def getTraversalTree(self,root,traversalindex,dict):
+    def getTraversalTree(self,root,traversalindex,level,dict):
         if root==None:
             return root
-        
-        if traversalindex in dict:
-            dict[traversalindex].append(root.data)
+        if (traversalindex in dict) and (level in dict[traversalindex]):
+            dict[traversalindex][level].append(root.val)
         else:
-            dict[traversalindex] = [root.data]
-        self.getTraversalTree(root.left,traversalindex-1,dict)
-        self.getTraversalTree(root.right,traversalindex+1,dict)
+            dict[traversalindex] = {}
+            dict[traversalindex][level] = [root.val]
+        self.getTraversalTree(root.left,traversalindex-1,level+1,dict)
+        self.getTraversalTree(root.right,traversalindex+1,level+1,dict)
+        
+    import sys
+    max_sum=-sys.maxsize-1
+    def max_sum_path(self,root):
+        if root == None:
+            return 0
+        left_node = self.max_sum_path(root.left)        
+        right_node = self.max_sum_path(root.right)  
+        
+        maximum_sum = max(root.data,max(left_node,right_node)+root.data)   
+        TreesProblem.max_sum = max(TreesProblem.max_sum,max(maximum_sum,left_node+right_node+root.data))
+        return maximum_sum
+    
+    def get_max_sum_path(self,root):
+        self.max_sum_path(root)
+        return TreesProblem.max_sum  
+    
+    
+    ########################## path to a given node ###############################
+    def pathgiven_node(self, root, key):
+        result=[]
+        self.path_given_node(root,key,result)
+        return result
+    def path_given_node(self,root,key,result):
+        if root==None:
+            return False
+        if root.val==key:
+            result.append(root.val)
+            return True
+        result.append(root.val)
+        if self.path_given_node(root.left,key,result) or self.path_given_node(root.right,key,result):
+            return True
+        result.pop()
         
         
+    ############### lowest common ancesstor###########################
+    def lowest_common_ancesstor(self,root,a,b):
+        if root == None:
+            return None
+        if left==a or right==b:
+            return root 
+        left = self.lowest_common_ancesstor(root.left,a,b)
+        right = self.lowest_common_ancesstor(root.right,a,b)
+        
+        if left != None and right != None:
+            return root
+        if left != None:
+            return right
+        else:
+            return left        
         
         
         
