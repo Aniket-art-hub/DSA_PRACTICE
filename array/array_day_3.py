@@ -188,11 +188,7 @@ def trap_rain_water(arr):
     :rtype: int
     """
     #approach1
-    left_max,right_max = {},{}
-    left_max[0] = arr[0]
-    for i in range(1,len(arr)):
-        left_max[i] = max(arr[i],left_max[i-1])
-    print(left_max)
+     
     right_max[len(arr)-1] = arr[len(arr)-1]
     for i in range(len(arr)-2,-1,-1):
         right_max[i] = max(arr[i],right_max[i+1])

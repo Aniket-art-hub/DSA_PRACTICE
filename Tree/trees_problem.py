@@ -1,3 +1,4 @@
+from Tree.basic_operation import Node
 class TreesProblem:
     def check_identical(self,root1,root2):
         if root1 is None and root2 is None:
@@ -259,7 +260,91 @@ class TreesProblem:
         if left != None:
             return right
         else:
-            return left        
+            return left
+        
+    ##################### flatten a binary tree in linkedlist ###########################
+    
+    def flatten_binaryTree(self,root):
+        if root==None:
+            return root
+        while root !=None:
+            if root.left!=None:
+                curr=root
+                tempTree = curr.right
+                curr.right = curr.left
+                curr.left=None
+                while curr.right!=None:
+                    curr=curr.right
+                curr.right = tempTree
+            root = root.right
+        return curr.right
+    
+    ######################## is cousins or not ###################################
+    def is_cousins(self,root,a,b):
+        if root==None:
+            return False
+        levela = self.get_level(root,a)
+        levelb = self.get_level(root,b)
+        if levela==0 or levelb==0:
+            return False
+        return (levela==levelb) and (not self.issibling(root,a,b))
+       
+    def issibling(self,root,a,b):
+        if root==None:
+            return False
+        if (root.left != None and root.right != None) and ((root.left.data==a and root.right.data==b) or (root.right.data==a and root.left.data==b)):
+            return True
+        return (self.issibling(root.left,a,b) or self.issibling(root.right,a,b)) 
+    def get_level(self,root,key):
+        if root==None:
+            return root
+        from queue import Queue
+        q=Queue()
+        q.put(root)
+        level = 1
+        while q.qsize()>0:
+            qsize = q.qsize()
+            while qsize>0:
+                curr=q.get()
+                if curr.data == key:
+                    return level
+                if curr.left:
+                    q.put(curr.right)
+                if curr.right:
+                    q.put(curr.right)
+            level +=1
+
+        return 0
+    
+    
+    ########################### construct binary tree by reorder and inorder ########################
+    
+    def buildTree(self, preorder, inorder):
+        self.index=0
+        return self.constructBinaryTree(preorder,inorder,0,len(inorder)-1)
+
+
+    def constructBinaryTree(self,preorder,inorder,start,end):
+        if start>end:
+            return None
+
+        newTreeNode = Node(preorder[self.index])
+        self.index+=1
+        if start==end:
+            return newTreeNode
+        get_index = self.search(inorder,start,end,newTreeNode.val)
+        newTreeNode.left = self.constructBinaryTree(preorder,inorder,start,get_index-1)
+        newTreeNode.right = self.constructBinaryTree(preorder,inorder,get_index+1,end)
+        return newTreeNode
+    
+
+    def search(self,inorder,start,end,key):
+        for i in range(start,end+1):
+            if inorder[i]==key:
+                return i
+        return -1
+                    
+            
         
         
         
