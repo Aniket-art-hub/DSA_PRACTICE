@@ -188,15 +188,22 @@ class TreesProblem:
             self.k_diff_node_recursive(root.left,k-1)
             self.k_diff_node_recursive(root.right,k-1)
             
-            
+    ########################## vertical traverse ####################################      
     def vertical_traversal_tree(self,root):
         if root==None:
             return root
-        dict={}
-        result=[]
+        from collections import defaultdict
+        dict=defaultdict(list)
         self.getTraversalTree(root,0,0,dict)
-        for key,data in enumerate(sorted(dict)):
-            result.append(sorted(dict[data]))
+        result=[]
+        for data in sorted(dict.keys()):
+            data_list=dict[data]
+            #to sort on the basis of level
+            sorted_data = sorted(data_list,key=lambda x:(x[1],x[0]))
+            temp=[]
+            for i in sorted_data:
+                temp.append(i[0])
+            result.append(temp)
         return result
             
         
@@ -204,14 +211,13 @@ class TreesProblem:
     def getTraversalTree(self,root,traversalindex,level,dict):
         if root==None:
             return root
-        if (traversalindex in dict) and (level in dict[traversalindex]):
-            dict[traversalindex][level].append(root.val)
-        else:
-            dict[traversalindex] = {}
-            dict[traversalindex][level] = [root.val]
+        dict[traversalindex].append(root.val,level)
         self.getTraversalTree(root.left,traversalindex-1,level+1,dict)
         self.getTraversalTree(root.right,traversalindex+1,level+1,dict)
-        
+    
+    
+    
+    ###################### max sum path ###############################
     import sys
     max_sum=-sys.maxsize-1
     def max_sum_path(self,root):
@@ -343,14 +349,23 @@ class TreesProblem:
             if inorder[i]==key:
                 return i
         return -1
-                    
-            
-        
-        
-        
-            
-        
-        
-            
+    
+    
+    ################## Diameter of binary tree ######################
+    def diameter_binaryTree(self,root):
+        self.diameter=0
+        if root==None:
+            return 0
+        self.get_diameter(root)
+        return self.diameter
+    
+    def get_diameter(self,root):
+        if root==None:
+            return 0
+        left_height = self.get_diameter(root.left)
+        right_height = self.get_diameter(root.right)
+        self.diameter = max(self.diameter,left_height+right_height)
+        return max(left_height,right_height)+1
+
         
             
