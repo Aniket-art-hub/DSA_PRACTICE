@@ -368,4 +368,139 @@ class TreesProblem:
         return max(left_height,right_height)+1
 
         
+    #################### varitaion of vertical traverse Top view ####################
+    def top_view(self,root):
+        if root==None:
+            return None
+        from collections import defaultdict
+        dict=defaultdict(list)
+        self.get_top_view(root,0,0,dict)
+        result = []
+        for data in sorted(dict.keys()):
+            result.append(dict[data][0])
+        return result
+            
+            
+            
+        
+    def get_top_view(self,root,index,level,dict):
+        if root==None:
+            return 0
+        if index not in dict:
+            dict[index] = [root.data,level]
+        elif dict[index][1]>level:
+            dict[index] = [root.data,level]
+        self.get_top_view(root.left,index-1,level+1,dict)
+        self.get_top_view(root.right,index+1,level+1,dict)
+        
+    ################## by levelorder traverse get top view ##########################
+    def level_order_top_view(self,root):
+        if root == None:
+            return root
+        list=[]
+        dict={}
+        hd=0
+        root.hd=0
+        list.append(root)
+
+        while len(list)>0:
+            data=list[0]
+            hd=data.hd
+            if hd not in dict:
+                dict[hd]=root.data
+                
+            if data.left:
+                data.left.hd=hd-1
+                list.append(data.data)
+            if data.right:
+                data.right.hd=hd+1
+                list.append(data.right)
+            list.pop(0)
+        result=[]
+        for i in sorted(dict):
+            result.append(dict[i])
+        return result
+    
+    ######################### left view of binary tree ##########################
+    def left_view(self,root):
+        if root==None:
+            return None
+        dict={}
+        self.get_left_view(root,0,dict)
+        result=[]
+        for level,data in dict.items():
+            result.append(dict[level])
+        return result
+            
+    def get_left_view(self,root,level,dict):
+        if root==None:
+            return 0
+        if level not in dict:
+            dict[level] = root.data
+        self.get_left_view(root.left,level+1,dict)
+        self.get_left_view(root.right,level+1,dict)
+    
+    
+    ####################### right view of binary tree #####################################
+    def right_view(self,root):
+        if root==None:
+            return None
+        dict={}
+        self.get_right_view(root,0,dict)
+        result=[]
+        for level,data in dict.items():
+            result.append(dict[level])
+        return result
+            
+    def get_right_view(self,root,level,dict):
+        if root==None:
+            return 0
+        if level not in dict:
+            dict[level] = root.data
+        self.get_right_view(root.right,level+1,dict)
+        self.get_right_view(root.left,level+1,dict)
+        
+        
+    ################ bottom view of binary tree ############################################
+    def bottom_view(self,root):
+        if root==None:
+            return None
+        dict={}
+        self.get_bottom_view(root,0,dict)
+        result=[]
+        if dict:
+            for data in sorted(dict.keys()):
+                result.append(dict[data])
+        return result
+            
+        
+    def get_bottom_view(self,root,index,dict):
+        if root==None:
+            return None
+        dict[index] = [root.data]
+        self.get_bottom_view(root.left,index-1,dict)
+        self.get_bottom_view(root.right,index+1,dict)
+        
+    # ------------------------------------------> level order get botton view
+#     def bottom_view(self,root):
+#         if root==None:
+#             return root
+#         from queue import Queue
+#         q=Queue()
+#         q.put(Pair(root,0))
+#         dict={}
+#         while q.qsize()>0:
+#             curr=q.get()
+#             hd = curr.hd      
+#             if hd not in dict:
+#                 dict[hd] = curr.data   #(getting some issue to get data)
+#             if curr.left:
+#                 q.put(Pair(root.left,curr.hd-1))
+#             if curr.right:
+#                 q.put(Pair(root.right,curr.hd+1))
+#         return dict
+# class Pair:
+#     def __init__(self,root,hd) -> None:
+#         self.root=root
+        self.hd = hd
             
