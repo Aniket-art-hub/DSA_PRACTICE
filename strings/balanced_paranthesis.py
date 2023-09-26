@@ -34,3 +34,26 @@ class BalanceParanthesis:
 BalanceParanthesis=BalanceParanthesis()
 s1="[[][]]"
 print(BalanceParanthesis.swap_to_balance(s1))
+
+
+class CheckBalanceOrNot:
+    def check_balance(self,s):
+        stack=[]
+        for i in range(len(s)):
+            if stack:
+                last_paran = stack[-1]
+                if last_paran=='{' and s[i]=="}":
+                    stack.pop()
+                elif last_paran=='[' and s[i]=="]":
+                    stack.pop()
+                elif last_paran=='(' and s[i]==")":
+                    stack.pop()
+                else:
+                    stack.append(s[i])
+            else:
+                stack.append(s[i])
+            # print(stack)
+        if len(stack)>0:
+            return "NO"
+        else:
+            return "YES"
