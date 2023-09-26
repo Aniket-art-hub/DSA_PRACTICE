@@ -59,3 +59,30 @@ string2="icleti"
 # print(Anagram.check_anagram_hash(string1,string2))
 string = "xaxbbbxx"
 print(Anagram.minimum_swap_to_anagram(string))
+
+
+class MakingAnagram:
+    def making_anagram(self,s1,s2):
+        hash_map_s1={}
+        hash_map_s2={}
+        for i in range(len(s1)):
+            if hash_map_s1 and s1[i] in hash_map_s1:
+                hash_map_s1[s1[i]]+=1
+            else:
+                hash_map_s1[s1[i]]=1
+        # print(hash_map)
+        for j in range(len(s2)):
+            if hash_map_s1 and s2[j] in hash_map_s1:
+                hash_map_s1[s2[j]]=hash_map_s1[s2[j]]-1
+                if hash_map_s1[s2[j]]==0:
+                    del hash_map_s1[s2[j]]
+            elif s2[j] in hash_map_s2:
+                hash_map_s2[s2[j]]+=1
+            else:
+                hash_map_s2[s2[j]]=1
+        hash_map_s1.update(hash_map_s2)
+        sum=0
+        if hash_map_s1:
+            for key,data in hash_map_s1.items():
+                sum+=data
+        return sum
