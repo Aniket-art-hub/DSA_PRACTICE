@@ -502,5 +502,21 @@ class TreesProblem:
 # class Pair:
 #     def __init__(self,root,hd) -> None:
 #         self.root=root
-        self.hd = hd
+        # self.hd = hd
+        
+        from queue import Queue
+        max_depth_queue = Queue()
+        max_depth_queue.put(root)
+        count = 0
+        while max_depth_queue.qsize()>0:
+            size = max_depth_queue.qsize()
+            while size>0:
+                curr = max_depth_queue.get()
+                if curr.left:
+                    max_depth_queue.put(curr.left)
+                if curr.right:
+                    max_depth_queue.put(curr.right)
+                size-=1
+            count+=1
+        return count
             
