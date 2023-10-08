@@ -18,3 +18,18 @@ class TowerOfHanoi:
         
 tower_obj = TowerOfHanoi()
 print(tower_obj.tower_of_hanoi(2))
+
+
+class Solution:
+    
+    def toh(self, N, fromm, to, aux):
+        # Your code here
+        if N==1:
+            print("move disk " + str(N) + " from rod " +  str(fromm) + " to rod " +  str(to))
+            return 1
+        count = 0
+        count += self.toh(N-1,fromm,aux,to)
+        print("move disk " + str(N) + " from rod " +  str(fromm) + " to rod " +  str(to))
+        count += 1
+        count += self.toh(N-1,aux,to,fromm)
+        return count
